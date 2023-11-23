@@ -1,46 +1,43 @@
 import java.sql.*;
 
 public class Connectivity {
-    public static void main(String[] args) {
-        deleteAuthor(6);
+    public static void main(String[] args) throws SQLException {
+
     }
 
     public static Connection connect() {
-        String url = "jdbc:postgresql://x/x";
-        String user = "x";
-        String password = "x";
-        Connection con = null;
+        String url = "jdbc:postgresql://hostname/databaseName";
+        String user = "username";
+        String password = "password";
+        Connection connection = null;
         try {
-            con = DriverManager.getConnection(url, user, password);
+            connection = DriverManager.getConnection(url, user, password);
             System.out.println("Connected to Database successfully.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return con;
+        return connection;
     }
 
-    public static boolean insertAuthor(int author_id,String author_name) {
-        try (Connection a = connect()) {
-            PreparedStatement st = a.prepareStatement("INSERT INTO authors(author_id,author_name) VALUES (?,?)");
-            st.setInt(1,author_id);
-            st.setString(2,author_name);
-            System.out.println("Author inserted successfully!");
-            return st.execute();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
+    public static void displayTableNames() throws SQLException {
+        Connection connection = connect();
+        DatabaseMetaData metaData = connection.getMetaData();
+        ResultSet tables = metaData.getTables(null, null, "%", new String[] { "TABLE" });
+        while (tables.next()) {
+            String tableName = tables.getString("TABLE_NAME");
+            System.out.print(tableName + " || ");
         }
     }
 
-    public static boolean deleteAuthor(int author_id) {
-        try (Connection a = connect()) {
-            Statement st = a.createStatement();
-            st.execute("DELETE FROM authors where author_id = " + author_id);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
+    public static void displayColumns() throws SQLException {
+        Connection connection = connect();
+        DatabaseMetaData metaData = connection.getMetaData();
+        ResultSet columns = metaData.getColumns(null, null, "table_name", null);
+        while (columns.next()) {
+            String columnName = columns.getString("COLUMN_NAME");
+            String columnType = columns.getString("TYPE_NAME");
+            System.out.print(columnName + " " + columnType);
+            System.out.println();
         }
-        System.out.println("Author deleted successfully with id=" + author_id);
-        return true;
     }
 }
