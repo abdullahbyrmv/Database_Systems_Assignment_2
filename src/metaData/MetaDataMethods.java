@@ -1,23 +1,13 @@
-import java.sql.*;
+package metaData;
 
-public class Connectivity {
-    public static void main(String[] args) throws SQLException {
+import abstractDao.AbstractDao;
 
-    }
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-    public static Connection connect() {
-        String url = "jdbc:postgresql://host/databaseName";
-        String user = "username";
-        String password = "password";
-        Connection connection = null;
-        try {
-            connection = DriverManager.getConnection(url, user, password);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return connection;
-    }
-
+public class MetaDataMethods extends AbstractDao {
     public static void displayTableNamesandColumns() throws SQLException {
         Connection connection = connect();
         DatabaseMetaData metaData = connection.getMetaData();
