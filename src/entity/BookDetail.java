@@ -1,13 +1,13 @@
 package entity;
 
-public class BookDetails {
+public class BookDetail {
     private Book book_id;
     private Author author_id;
 
-    public BookDetails() {
+    public BookDetail() {
     }
 
-    public BookDetails(Book book_id, Author author_id) {
+    public BookDetail(Book book_id, Author author_id) {
         this.book_id = book_id;
         this.author_id = author_id;
     }
