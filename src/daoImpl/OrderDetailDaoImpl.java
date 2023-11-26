@@ -26,7 +26,7 @@ public class OrderDetailDaoImpl extends AbstractDao implements OrderDetailInterf
     }
 
     @Override
-    public boolean deleteOrderDetail(Book book_id, Order order_id) {
+    public boolean deleteOrderDetail(int book_id, int order_id) {
         return false;
     }
 

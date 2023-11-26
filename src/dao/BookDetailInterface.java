@@ -1,7 +1,5 @@
 package dao;
 
-import entity.Author;
-import entity.Book;
 import entity.BookDetail;
 
 import java.util.List;
@@ -13,7 +11,7 @@ public interface BookDetailInterface {
 
     public boolean updateBookDetail(BookDetail bookDetail);
 
-    public boolean deleteBookDetail(Book book_id, Author author_id);
+    public boolean deleteBookDetail(int book_id, int author_id);
 
     public BookDetail getBookDetailById(int book_id);
 }

@@ -15,7 +15,7 @@ public interface BookInterface {
 
     public Book getBookById(int book_id);
 
-    public List<Book> getWholeBookInformation();
+    public List<Book> getAuthorInformation();
 
-    public Book getWholeBookInformationById();
+    public List<Book> getAuthorInformationById(int book_id);
 }

@@ -2,16 +2,27 @@ package daoImpl;
 
 import abstractDao.AbstractDao;
 import dao.BookInterface;
+import entity.Author;
 import entity.Book;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BookDaoImpl extends AbstractDao implements BookInterface {
+
+    private Book getBook(ResultSet res) throws SQLException {
+        int book_id = res.getInt("book_id");
+        String title = res.getString("title");
+        String genre = res.getString("genre");
+        int stock = res.getInt("stock");
+        String author_name = res.getString("first_name");
+        String author_surname = res.getString("last_name");
+        int author_id = res.getInt("author_id");
+        Author author = new Author(author_id, author_name, author_surname);
+
+        return new Book(book_id, title, genre, stock, author);
+    }
 
     @Override
     public boolean addBook(Book book) {
@@ -96,12 +107,36 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
     }
 
     @Override
-    public List<Book> getWholeBookInformation() {
-        return null;
+    public List<Book> getAuthorInformation() {
+        List<Book> books = new ArrayList<>();
+        try (Connection connection = connect()) {
+            Statement st = connection.createStatement();
+            st.execute("SELECT * FROM (book NATURAL JOIN book_detail) JOIN author USING(author_id)");
+            ResultSet res = st.getResultSet();
+            while (res.next()) {
+                Book book = getBook(res);
+                books.add(book);
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        return books;
     }
 
     @Override
-    public Book getWholeBookInformationById() {
-        return null;
+    public List<Book> getAuthorInformationById(int book_id) {
+        List<Book> books = new ArrayList<>();
+        try (Connection connection = connect()) {
+            Statement st = connection.createStatement();
+            st.execute("SELECT * FROM (book NATURAL JOIN book_detail) JOIN author USING(author_id) WHERE book_id = " + book_id);
+            ResultSet res = st.getResultSet();
+            while (res.next()) {
+                Book book = getBook(res);
+                books.add(book);
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        return books;
     }
 }

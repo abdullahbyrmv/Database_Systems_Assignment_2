@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public abstract class AbstractDao {
     public static Connection connect() {
-        String url = "jdbc:postgresql://host/";
+        String url = "jdbc:postgresql://x/x";
         String user = "x";
         String password = "x";
         Connection connection = null;

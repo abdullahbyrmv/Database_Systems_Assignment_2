@@ -5,8 +5,25 @@ public class Book {
     private String title;
     private String genre;
     private int stock;
+    private Author author;
 
     public Book() {
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public Book(int book_id, String title, String genre, int stock, Author author) {
+        this.book_id = book_id;
+        this.title = title;
+        this.genre = genre;
+        this.stock = stock;
+        this.author = author;
     }
 
     public Book(int book_id, String title, String genre, int stock) {
@@ -56,6 +73,7 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", genre='" + genre + '\'' +
                 ", stock=" + stock +
+                ", author=" + author +
                 '}';
     }
 }

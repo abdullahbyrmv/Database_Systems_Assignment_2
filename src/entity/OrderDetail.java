@@ -1,37 +1,36 @@
 package entity;
 
 public class OrderDetail {
-    private Order order_id;
-    private Book book_id;
+    private int order_id;
+    private int book_id;
+
+    public OrderDetail(int order_id, int book_id) {
+        this.order_id = order_id;
+        this.book_id = book_id;
+    }
 
     public OrderDetail() {
     }
 
-    public OrderDetail(Order order_id, Book book_id) {
-        this.order_id = order_id;
-        this.book_id = book_id;
-    }
-
-    public Order getOrder_id() {
+    public int getOrder_id() {
         return order_id;
     }
 
-    public void setOrder_id(Order order_id) {
+    public void setOrder_id(int order_id) {
         this.order_id = order_id;
     }
 
-    public Book getBook_id() {
+    public int getBook_id() {
         return book_id;
     }
 
-    public void setBook_id(Book book_id) {
+    public void setBook_id(int book_id) {
         this.book_id = book_id;
     }
 
-
     @Override
     public String toString() {
-        return "OrderDetails{" +
+        return "OrderDetail{" +
                 "order_id=" + order_id +
                 ", book_id=" + book_id +
                 '}';
