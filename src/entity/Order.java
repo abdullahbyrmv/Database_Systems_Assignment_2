@@ -1,19 +1,36 @@
 package entity;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 public class Order {
     private int order_id;
-    private Customer customer_id;
+    private int customer_id;
     private Date order_date;
+    private Customer customer;
 
     public Order() {
     }
 
-    public Order(int order_id, Customer customer_id, Date order_date) {
+    public Order(int order_id, int customer_id, Date order_date, Customer customer) {
         this.order_id = order_id;
         this.customer_id = customer_id;
         this.order_date = order_date;
+        this.customer = customer;
+    }
+
+    public Order(int order_id, int customer_id, Date order_date) {
+        this.order_id = order_id;
+        this.customer_id = customer_id;
+        this.order_date = order_date;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public int getOrder_id() {
@@ -24,11 +41,11 @@ public class Order {
         this.order_id = order_id;
     }
 
-    public Customer getCustomer_id() {
+    public int getCustomer_id() {
         return customer_id;
     }
 
-    public void setCustomer_id(Customer customer_id) {
+    public void setCustomer_id(int customer_id) {
         this.customer_id = customer_id;
     }
 
@@ -46,6 +63,7 @@ public class Order {
                 "order_id=" + order_id +
                 ", customer_id=" + customer_id +
                 ", order_date=" + order_date +
+                ", customer=" + customer +
                 '}';
     }
 }

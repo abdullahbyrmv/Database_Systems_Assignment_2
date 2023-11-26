@@ -6,6 +6,15 @@ public class Book {
     private String genre;
     private int stock;
     private Author author;
+    private Order order;
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 
     public Book() {
     }
@@ -24,6 +33,23 @@ public class Book {
         this.genre = genre;
         this.stock = stock;
         this.author = author;
+    }
+
+    public Book(int book_id, String title, String genre, int stock, Order order) {
+        this.book_id = book_id;
+        this.title = title;
+        this.genre = genre;
+        this.stock = stock;
+        this.order = order;
+    }
+
+    public Book(int book_id, String title, String genre, int stock, Author author, Order order) {
+        this.book_id = book_id;
+        this.title = title;
+        this.genre = genre;
+        this.stock = stock;
+        this.author = author;
+        this.order = order;
     }
 
     public Book(int book_id, String title, String genre, int stock) {
@@ -74,6 +100,7 @@ public class Book {
                 ", genre='" + genre + '\'' +
                 ", stock=" + stock +
                 ", author=" + author +
+                ", order=" + order +
                 '}';
     }
 }

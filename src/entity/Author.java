@@ -2,16 +2,16 @@ package entity;
 
 public class Author {
     private int author_id;
-    private String first_name;
-    private String last_name;
+    private String author_name;
+    private String author_surname;
 
-    public Author() {
+    public Author(int author_id, String author_name, String author_surname) {
+        this.author_id = author_id;
+        this.author_name = author_name;
+        this.author_surname = author_surname;
     }
 
-    public Author(int author_id, String first_name, String last_name) {
-        this.author_id = author_id;
-        this.first_name = first_name;
-        this.last_name = last_name;
+    public Author() {
     }
 
     public int getAuthor_id() {
@@ -22,28 +22,28 @@ public class Author {
         this.author_id = author_id;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getAuthor_name() {
+        return author_name;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setAuthor_name(String author_name) {
+        this.author_name = author_name;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getAuthor_surname() {
+        return author_surname;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setAuthor_surname(String author_surname) {
+        this.author_surname = author_surname;
     }
 
     @Override
     public String toString() {
         return "Author{" +
                 "author_id=" + author_id +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
+                ", author_name='" + author_name + '\'' +
+                ", author_surname='" + author_surname + '\'' +
                 '}';
     }
 }

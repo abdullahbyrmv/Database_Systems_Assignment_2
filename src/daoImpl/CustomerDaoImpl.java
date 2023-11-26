@@ -16,10 +16,10 @@ public class CustomerDaoImpl extends AbstractDao implements CustomerInterface {
     @Override
     public boolean addCustomer(Customer customer) {
         try (Connection connection = connect();) {
-            PreparedStatement st = connection.prepareStatement("INSERT INTO customer (customer_id,first_name,last_Name,address,email) VALUES (?,?,?,?,?)");
+            PreparedStatement st = connection.prepareStatement("INSERT INTO customer (customer_id,customer_name,customer_surname,address,email) VALUES (?,?,?,?,?)");
             st.setInt(1, customer.getCustomer_id());
-            st.setString(2, customer.getFirst_name());
-            st.setString(3, customer.getLast_name());
+            st.setString(2, customer.getCustomer_name());
+            st.setString(3, customer.getCustomer_surname());
             st.setString(4, customer.getAddress());
             st.setString(5, customer.getEmail());
             return st.execute();
@@ -38,8 +38,8 @@ public class CustomerDaoImpl extends AbstractDao implements CustomerInterface {
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int customer_id = res.getInt("customer_id");
-                String first_name = res.getString("first_name");
-                String last_name = res.getString("last_name");
+                String first_name = res.getString("customer_name");
+                String last_name = res.getString("customer_surname");
                 String address = res.getString("address");
                 String email = res.getString("email");
                 customers.add(new Customer(customer_id, first_name, last_name, address, email));
@@ -53,9 +53,9 @@ public class CustomerDaoImpl extends AbstractDao implements CustomerInterface {
     @Override
     public boolean updateCustomer(Customer customer) {
         try (Connection connection = connect()) {
-            PreparedStatement st = connection.prepareStatement("UPDATE customer SET first_name=?, last_name=?, address=?,email=? WHERE customer_id=?");
-            st.setString(1, customer.getFirst_name());
-            st.setString(2, customer.getLast_name());
+            PreparedStatement st = connection.prepareStatement("UPDATE customer SET customer_name=?, customer_surname=?, address=?,email=? WHERE customer_id=?");
+            st.setString(1, customer.getCustomer_name());
+            st.setString(2, customer.getCustomer_surname());
             st.setString(3, customer.getAddress());
             st.setString(4, customer.getEmail());
             st.setInt(5, customer.getCustomer_id());
@@ -87,8 +87,8 @@ public class CustomerDaoImpl extends AbstractDao implements CustomerInterface {
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int id = res.getInt("customer_id");
-                String first_name = res.getString("first_name");
-                String last_name = res.getString("last_name");
+                String first_name = res.getString("customer_name");
+                String last_name = res.getString("customer_surname");
                 String address = res.getString("address");
                 String email = res.getString("email");
                 customer = new Customer(id, first_name, last_name, address, email);

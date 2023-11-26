@@ -2,20 +2,20 @@ package entity;
 
 public class Customer {
     private int customer_id;
-    private String first_name;
-    private String last_name;
+    private String customer_name;
+    private String customer_surname;
     private String address;
     private String email;
 
-    public Customer() {
-    }
-
-    public Customer(int customer_id, String first_name, String last_name, String address, String email) {
+    public Customer(int customer_id, String customer_name, String customer_surname, String address, String email) {
         this.customer_id = customer_id;
-        this.first_name = first_name;
-        this.last_name = last_name;
+        this.customer_name = customer_name;
+        this.customer_surname = customer_surname;
         this.address = address;
         this.email = email;
+    }
+
+    public Customer() {
     }
 
     public int getCustomer_id() {
@@ -26,20 +26,20 @@ public class Customer {
         this.customer_id = customer_id;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getCustomer_name() {
+        return customer_name;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setCustomer_name(String customer_name) {
+        this.customer_name = customer_name;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getCustomer_surname() {
+        return customer_surname;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setCustomer_surname(String customer_surname) {
+        this.customer_surname = customer_surname;
     }
 
     public String getAddress() {
@@ -62,8 +62,8 @@ public class Customer {
     public String toString() {
         return "Customer{" +
                 "customer_id=" + customer_id +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
+                ", customer_name='" + customer_name + '\'' +
+                ", customer_surname='" + customer_surname + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 '}';

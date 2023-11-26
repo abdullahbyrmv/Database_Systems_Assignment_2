@@ -4,6 +4,8 @@ import abstractDao.AbstractDao;
 import dao.BookInterface;
 import entity.Author;
 import entity.Book;
+import entity.Customer;
+import entity.Order;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,12 +18,56 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
         String title = res.getString("title");
         String genre = res.getString("genre");
         int stock = res.getInt("stock");
-        String author_name = res.getString("first_name");
-        String author_surname = res.getString("last_name");
+        String author_name = res.getString("author_name");
+        String author_surname = res.getString("author_surname");
         int author_id = res.getInt("author_id");
+
         Author author = new Author(author_id, author_name, author_surname);
 
         return new Book(book_id, title, genre, stock, author);
+    }
+
+    private Book getBook2(ResultSet res) throws SQLException {
+        int book_id = res.getInt("book_id");
+        String title = res.getString("title");
+        String genre = res.getString("genre");
+        int stock = res.getInt("stock");
+        int order_id = res.getInt("order_id");
+        Date date = res.getDate("order_date");
+        int customer_id = res.getInt("customer_id");
+        String customer_name = res.getString("customer_name");
+        String customer_surname = res.getString("customer_surname");
+        String customer_address = res.getString("address");
+        String customer_email = res.getString("email");
+
+        Customer customer = new Customer(customer_id, customer_name, customer_surname, customer_address, customer_email);
+
+        Order order = new Order(order_id, customer_id, date, customer);
+
+        return new Book(book_id, title, genre, stock, order);
+    }
+
+    private Book getBook3(ResultSet res) throws SQLException {
+        int book_id = res.getInt("book_id");
+        String title = res.getString("title");
+        String genre = res.getString("genre");
+        int stock = res.getInt("stock");
+        int order_id = res.getInt("order_id");
+        Date date = res.getDate("order_date");
+        int customer_id = res.getInt("customer_id");
+        String customer_name = res.getString("customer_name");
+        String customer_surname = res.getString("customer_surname");
+        String customer_address = res.getString("address");
+        String customer_email = res.getString("email");
+        String author_name = res.getString("author_name");
+        String author_surname = res.getString("author_surname");
+        int author_id = res.getInt("author_id");
+
+        Author author = new Author(author_id, author_name, author_surname);
+        Customer customer = new Customer(customer_id, customer_name, customer_surname, customer_address, customer_email);
+        Order order = new Order(order_id, customer_id, date, customer);
+
+        return new Book(book_id, title, genre, stock, author, order);
     }
 
     @Override
@@ -132,6 +178,78 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 Book book = getBook(res);
+                books.add(book);
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        return books;
+    }
+
+    @Override
+    public List<Book> getOrderInformation() {
+        List<Book> books = new ArrayList<>();
+        try (Connection connection = connect()) {
+            Statement st = connection.createStatement();
+            st.execute("SELECT * FROM ((book NATURAL JOIN order_detail) \n" +
+                    "JOIN orders USING(order_id)) JOIN customer USING(customer_id)");
+            ResultSet res = st.getResultSet();
+            while (res.next()) {
+                Book book = getBook2(res);
+                books.add(book);
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        return books;
+    }
+
+    @Override
+    public List<Book> getOrderInformationById(int book_id) {
+        List<Book> books = new ArrayList<>();
+        try (Connection connection = connect()) {
+            Statement st = connection.createStatement();
+            st.execute("SELECT * FROM ((book NATURAL JOIN order_detail) \\n\" +\n" +
+                    "                    \"JOIN orders USING(order_id)) JOIN customer USING(customer_id) where book_id = " + book_id);
+            ResultSet res = st.getResultSet();
+            while (res.next()) {
+                Book book = getBook2(res);
+                books.add(book);
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        return books;
+    }
+
+    @Override
+    public List<Book> getWholeBookInformation() {
+        List<Book> books = new ArrayList<>();
+        try (Connection connection = connect()) {
+            Statement st = connection.createStatement();
+            st.execute("SELECT * FROM ((((book NATURAL JOIN book_detail) JOIN author USING(author_id))\n" +
+                    " JOIN order_detail USING(book_id)) JOIN orders USING(order_id)) JOIN customer USING(customer_id)");
+            ResultSet res = st.getResultSet();
+            while (res.next()) {
+                Book book = getBook3(res);
+                books.add(book);
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        return books;
+    }
+
+    @Override
+    public List<Book> getWholeBookInformationById(int book_id) {
+        List<Book> books = new ArrayList<>();
+        try (Connection connection = connect()) {
+            Statement st = connection.createStatement();
+            st.execute("SELECT * FROM ((((book NATURAL JOIN book_detail) JOIN author USING(author_id))\n" +
+                    " JOIN order_detail USING(book_id)) JOIN orders USING(order_id)) JOIN customer USING(customer_id) where book_id = " + book_id);
+            ResultSet res = st.getResultSet();
+            while (res.next()) {
+                Book book = getBook3(res);
                 books.add(book);
             }
         } catch (Exception e) {
