@@ -16,6 +16,16 @@ import java.util.List;
 
 public class OrderDetailDaoImpl extends AbstractDao implements OrderDetailInterface {
 
+    private void deleteEmptyOrder() {
+        try (Connection connection = connect()) {
+            Statement statement = connection.createStatement();
+            String query = "DELETE FROM orders WHERE order_id NOT IN (SELECT DISTINCT order_id FROM order_detail)";
+            statement.executeUpdate(query);
+        } catch (Exception e) {
+            System.out.println("An error occurred while deleting empty orders: " + e.getMessage());
+        }
+    }
+
     @Override
     public boolean addOrderDetail(OrderDetail orderDetail) {
 
@@ -43,14 +53,17 @@ public class OrderDetailDaoImpl extends AbstractDao implements OrderDetailInterf
                 updateBookStatement.executeUpdate();
 
                 connection.commit();
+                deleteEmptyOrder();
                 return true;
             } else {
                 connection.rollback();
                 System.out.println("Not enough books in stock for this order.");
+                deleteEmptyOrder();
                 return false;
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
+            deleteEmptyOrder();
             return false;
         }
     }
@@ -92,11 +105,12 @@ public class OrderDetailDaoImpl extends AbstractDao implements OrderDetailInterf
     public boolean deleteOrderDetail(int order_id, int book_id) {
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
-            st.execute("DELETE FROM order_detail WHERE order_id = " + order_id + " AND book_id" + book_id);
+            st.execute("DELETE FROM order_detail WHERE order_id = " + order_id + " AND book_id = " + book_id);
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
             return false;
         }
+        deleteEmptyOrder();
         return true;
     }
 
