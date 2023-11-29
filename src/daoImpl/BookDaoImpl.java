@@ -78,6 +78,7 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
             st.setString(2, book.getTitle());
             st.setString(3, book.getGenre());
             st.setInt(4, book.getStock());
+            System.out.println("Query executing: INSERT INTO book (book_id,title,genre,stock) VALUES (" + book.getBook_id() + "," + book.getTitle() + "," + book.getGenre() + "," + book.getStock() + ")");
             return st.execute();
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
@@ -97,6 +98,7 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
                 String title = res.getString("title");
                 String genre = res.getString("genre");
                 int stock = res.getInt("stock");
+                System.out.println("book_id = " + book_id + ", title = " + title + ", genre = " + genre + ", stock = " + stock);
                 books.add(new Book(book_id, title, genre, stock));
             }
         } catch (Exception e) {
