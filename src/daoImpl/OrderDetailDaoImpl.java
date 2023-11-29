@@ -58,7 +58,6 @@ public class OrderDetailDaoImpl extends AbstractDao implements OrderDetailInterf
             } else {
                 connection.rollback();
                 System.out.println("Not enough books in stock for this order.");
-                deleteEmptyOrder();
                 return false;
             }
         } catch (Exception e) {

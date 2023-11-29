@@ -78,7 +78,8 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
             st.setString(2, book.getTitle());
             st.setString(3, book.getGenre());
             st.setInt(4, book.getStock());
-            System.out.println("Query executing: INSERT INTO book (book_id,title,genre,stock) VALUES (" + book.getBook_id() + "," + book.getTitle() + "," + book.getGenre() + "," + book.getStock() + ")");
+            System.out.println("Query executing: INSERT INTO book (book_id,title,genre,stock) VALUES ("
+                    + book.getBook_id() + "," + book.getTitle() + "," + book.getGenre() + "," + book.getStock() + ")");
             return st.execute();
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
@@ -115,6 +116,7 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
             st.setString(2, book.getGenre());
             st.setInt(3, book.getStock());
             st.setInt(4, book.getBook_id());
+            System.out.println("Updated book with book_id = " + book.getBook_id());
             return st.execute();
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
@@ -131,6 +133,7 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
             System.out.println("An error occurred: " + e.getMessage());
             return false;
         }
+        System.out.println("Deleted book with book_id = " + book_id);
         return true;
     }
 
@@ -146,6 +149,7 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
                 String title = res.getString("title");
                 String genre = res.getString("genre");
                 int stock = res.getInt("stock");
+                System.out.println("book_id = " + book_id + ", title = " + title + ", genre = " + genre + ", stock = " + stock);
                 book = new Book(id, title, genre, stock);
             }
         } catch (Exception e) {
