@@ -4,17 +4,13 @@ import dao.*;
 import entity.Author;
 import entity.Book;
 import entity.Customer;
+import entity.Order;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {
-    LocalDate myDate = LocalDate.of(2023, 11, 26);
-    Date date = Date.valueOf(myDate);
-
     static Scanner input = new Scanner(System.in);
-
     static BookInterface bookTable = Context.instanceBookDao();
     static AuthorInterface authorTable = Context.instanceAuthorDao();
     static BookDetailInterface bookDetailTable = Context.instanceBookDetailDao();
@@ -268,7 +264,63 @@ public class Main {
     }
 
     public static void orderOperations() {
-
+        System.out.println();
+        System.out.println("What would you like to do?");
+        System.out.println("""
+                1.Insert order
+                2.Get all orders
+                3.Get order by order_id
+                4.Update order
+                5.Delete order
+                """);
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1:
+                System.out.print("Enter order_id: ");
+                int order_id = input.nextInt();
+                input.nextLine();
+                System.out.print("Enter customer_id: ");
+                int customer_id = input.nextInt();
+                input.nextLine();
+                System.out.print("Enter order_date: ");
+                String order_date = input.nextLine();
+                orderTable.addOrder(new Order(order_id, customer_id, Date.valueOf(order_date)));
+                orderOperations();
+            case 2:
+                orderTable.getAllOrders();
+                orderOperations();
+            case 3:
+                System.out.print("Please enter the id of order: ");
+                int order_id2 = input.nextInt();
+                orderTable.getOrderById(order_id2);
+                orderOperations();
+            case 4:
+                System.out.print("Please enter the id of order you would like to update: ");
+                int order_id3 = input.nextInt();
+                input.nextLine();
+                Order order = orderTable.getOrderById(order_id3);
+                if (order == null) {
+                    orderOperations();
+                }
+                System.out.println("Please enter new values to attributes you would like to update." + "Note: If you do not want to update any attribute just press enter and skip it.");
+                System.out.print("Update customer_id: ");
+                int customer_id2 = input.nextInt();
+                input.nextLine();
+                System.out.print("Update order_date: ");
+                String order_date2 = input.nextLine();
+                if (order_date2.trim().length() < 1) {
+                    order_date2 = String.valueOf(order.getOrder_date());
+                }
+                order.setCustomer_id(customer_id2);
+                order.setOrder_date(Date.valueOf(order_date2));
+                orderTable.updateOrder(order);
+                orderOperations();
+            case 5:
+                System.out.print("Please enter the id of order you would like to delete: ");
+                int order_id4 = input.nextInt();
+                orderTable.deleteOrder(order_id4);
+                orderOperations();
+        }
     }
 
     public static void book_detailOperations() {
