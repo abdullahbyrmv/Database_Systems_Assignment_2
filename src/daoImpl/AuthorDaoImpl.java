@@ -20,11 +20,15 @@ public class AuthorDaoImpl extends AbstractDao implements AuthorInterface {
             st.setInt(1, author.getAuthor_id());
             st.setString(2, author.getAuthor_name());
             st.setString(3, author.getAuthor_surname());
-            return st.execute();
+            System.out.println("Query executing: INSERT INTO author (author_id,author_name,author_surname) VALUES ("
+                    + author.getAuthor_id() + "," + author.getAuthor_name() + "," + author.getAuthor_surname() + ")");
+            st.execute();
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
             return false;
         }
+        System.out.println("Author inserted successfully!");
+        return true;
     }
 
     @Override
@@ -36,9 +40,10 @@ public class AuthorDaoImpl extends AbstractDao implements AuthorInterface {
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int author_id = res.getInt("author_id");
-                String first_name = res.getString("author_name");
-                String last_name = res.getString("author_surname");
-                authors.add(new Author(author_id, first_name, last_name));
+                String author_name = res.getString("author_name");
+                String author_surname = res.getString("author_surname");
+                System.out.println("author_id = " + author_id + ", author_name = " + author_name + ", author_surname = " + author_surname);
+                authors.add(new Author(author_id, author_name, author_surname));
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
@@ -53,6 +58,7 @@ public class AuthorDaoImpl extends AbstractDao implements AuthorInterface {
             st.setString(1, author.getAuthor_name());
             st.setString(2, author.getAuthor_surname());
             st.setInt(3, author.getAuthor_id());
+            System.out.println("Updated author with author_id = " + author.getAuthor_id());
             return st.execute();
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
@@ -64,11 +70,17 @@ public class AuthorDaoImpl extends AbstractDao implements AuthorInterface {
     public boolean deleteAuthor(int author_id) {
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
-            st.execute("DELETE FROM author WHERE author_id = " + author_id);
+            int number_of_affected_rows = st.executeUpdate("DELETE FROM author WHERE author_id = " + author_id);
+
+            if (number_of_affected_rows == 0) {
+                System.out.println("No author with author_id = " + author_id + " exists.");
+                return false;
+            }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
             return false;
         }
+        System.out.println("Deleted author with author_id = " + author_id);
         return true;
     }
 
@@ -81,12 +93,16 @@ public class AuthorDaoImpl extends AbstractDao implements AuthorInterface {
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int id = res.getInt("author_id");
-                String first_name = res.getString("author_name");
-                String last_name = res.getString("author_surname");
-                author = new Author(id, first_name, last_name);
+                String author_name = res.getString("author_name");
+                String author_surname = res.getString("author_surname");
+                System.out.println("author_id = " + author_id + ", author_name = " + author_name + ", author_surname = " + author_surname);
+                author = new Author(id, author_name, author_surname);
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
+        }
+        if (author == null) {
+            System.out.println("No such author found");
         }
         return author;
     }

@@ -146,7 +146,12 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
     public boolean deleteBook(int book_id) {
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
-            st.execute("DELETE FROM book WHERE book_id = " + book_id);
+            int number_of_affected_rows = st.executeUpdate("DELETE FROM book WHERE book_id = " + book_id);
+
+            if (number_of_affected_rows == 0) {
+                System.out.println("No book with book_id = " + book_id + " exists.");
+                return false;
+            }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
             return false;
@@ -172,6 +177,9 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
+        }
+        if (book == null) {
+            System.out.println("No such book found");
         }
         return book;
     }
