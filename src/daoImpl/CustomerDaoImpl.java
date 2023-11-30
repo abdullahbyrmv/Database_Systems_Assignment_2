@@ -22,11 +22,16 @@ public class CustomerDaoImpl extends AbstractDao implements CustomerInterface {
             st.setString(3, customer.getCustomer_surname());
             st.setString(4, customer.getAddress());
             st.setString(5, customer.getEmail());
-            return st.execute();
+            System.out.println("Query executing: INSERT INTO customer (customer_id,customer_name,customer_surname,address,email)" +
+                    " " + "VALUES (" + customer.getCustomer_id() + "," + customer.getCustomer_name() +
+                    "," + customer.getCustomer_surname() + "," + customer.getAddress() + "," + customer.getEmail() + ")");
+            st.execute();
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
             return false;
         }
+        System.out.println("Customer inserted successfully!");
+        return true;
     }
 
     @Override
@@ -38,11 +43,13 @@ public class CustomerDaoImpl extends AbstractDao implements CustomerInterface {
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int customer_id = res.getInt("customer_id");
-                String first_name = res.getString("customer_name");
-                String last_name = res.getString("customer_surname");
+                String customer_name = res.getString("customer_name");
+                String customer_surname = res.getString("customer_surname");
                 String address = res.getString("address");
                 String email = res.getString("email");
-                customers.add(new Customer(customer_id, first_name, last_name, address, email));
+                System.out.println("customer_id = " + customer_id + ", customer_name = " + customer_name +
+                        ", customer_surname = " + customer_surname + ", address = " + address + ", email = " + email);
+                customers.add(new Customer(customer_id, customer_name, customer_surname, address, email));
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
@@ -59,6 +66,7 @@ public class CustomerDaoImpl extends AbstractDao implements CustomerInterface {
             st.setString(3, customer.getAddress());
             st.setString(4, customer.getEmail());
             st.setInt(5, customer.getCustomer_id());
+            System.out.println("Updated customer with customer_id = " + customer.getCustomer_id());
             return st.execute();
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
@@ -70,11 +78,17 @@ public class CustomerDaoImpl extends AbstractDao implements CustomerInterface {
     public boolean deleteCustomer(int customer_id) {
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
-            st.execute("DELETE FROM customer WHERE customer_id = " + customer_id);
+            int number_of_affected_rows = st.executeUpdate("DELETE FROM customer WHERE customer_id = " + customer_id);
+
+            if (number_of_affected_rows == 0) {
+                System.out.println("No customer with customer_id = " + customer_id + " exists.");
+                return false;
+            }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
             return false;
         }
+        System.out.println("Deleted customer with customer_id = " + customer_id);
         return true;
     }
 
@@ -87,14 +101,19 @@ public class CustomerDaoImpl extends AbstractDao implements CustomerInterface {
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int id = res.getInt("customer_id");
-                String first_name = res.getString("customer_name");
-                String last_name = res.getString("customer_surname");
+                String customer_name = res.getString("customer_name");
+                String customer_surname = res.getString("customer_surname");
                 String address = res.getString("address");
                 String email = res.getString("email");
-                customer = new Customer(id, first_name, last_name, address, email);
+                System.out.println("customer_id = " + id + ", customer_name = " + customer_name +
+                        ", customer_surname = " + customer_surname + ", address = " + address + ", email = " + email);
+                customer = new Customer(id, customer_name, customer_surname, address, email);
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
+        }
+        if (customer == null) {
+            System.out.println("No such customer found");
         }
         return customer;
     }

@@ -3,6 +3,7 @@ package main;
 import dao.*;
 import entity.Author;
 import entity.Book;
+import entity.Customer;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -38,7 +39,6 @@ public class Main {
                     5.book_detail table
                     6.order_detail table
                     7.Close application""");
-
             int choice = input.nextInt();
             input.nextLine();
             switch (choice) {
@@ -47,9 +47,13 @@ public class Main {
                 case 2:
                     authorOperations();
                 case 3:
+                    customerOperations();
                 case 4:
+                    orderOperations();
                 case 5:
+                    book_detailOperations();
                 case 6:
+                    order_detailOperations();
                 case 7:
                     endSession();
             }
@@ -96,8 +100,7 @@ public class Main {
                 if (book == null) {
                     bookOperations();
                 }
-                System.out.println("Please enter new values to attributes you would like to update." +
-                        "Note: If you do not want to update any attribute just press enter and skip it.");
+                System.out.println("Please enter new values to attributes you would like to update." + "Note: If you do not want to update any attribute just press enter and skip it.");
                 System.out.print("Update title: ");
                 String title2 = input.nextLine();
                 if (title2.trim().length() < 1) {
@@ -164,8 +167,7 @@ public class Main {
                 if (author == null) {
                     authorOperations();
                 }
-                System.out.println("Please enter new values to attributes you would like to update." +
-                        "Note: If you do not want to update any attribute just press enter and skip it.");
+                System.out.println("Please enter new values to attributes you would like to update." + "Note: If you do not want to update any attribute just press enter and skip it.");
                 System.out.print("Update author_name: ");
                 String author_name2 = input.nextLine();
                 if (author_name2.trim().length() < 1) {
@@ -186,6 +188,95 @@ public class Main {
                 authorTable.deleteAuthor(author_id4);
                 authorOperations();
         }
+    }
+
+    public static void customerOperations() {
+        System.out.println();
+        System.out.println("What would you like to do?");
+        System.out.println("""
+                1.Insert customer
+                2.Get all customers
+                3.Get customer by customer_id
+                4.Update customer
+                5.Delete customer
+                """);
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1:
+                System.out.print("Enter customer id: ");
+                int customer_id = input.nextInt();
+                input.nextLine();
+                System.out.print("Enter customer_name: ");
+                String customer_name = input.nextLine();
+                System.out.print("Enter customer_surname: ");
+                String customer_surname = input.nextLine();
+                System.out.print("Enter customer address: ");
+                String address = input.nextLine();
+                System.out.print("Enter customer email: ");
+                String email = input.nextLine();
+                customerTable.addCustomer(new Customer(customer_id, customer_name, customer_surname, address, email));
+                customerOperations();
+            case 2:
+                customerTable.getAllCustomers();
+                customerOperations();
+            case 3:
+                System.out.print("Please enter the id of customer: ");
+                int customer_id2 = input.nextInt();
+                customerTable.getCustomerById(customer_id2);
+                customerOperations();
+            case 4:
+                System.out.print("Please enter the id of customer you would like to update: ");
+                int customer_id3 = input.nextInt();
+                input.nextLine();
+                Customer customer = customerTable.getCustomerById(customer_id3);
+                if (customer == null) {
+                    customerOperations();
+                }
+                System.out.println("Please enter new values to attributes you would like to update." + "Note: If you do not want to update any attribute just press enter and skip it.");
+                System.out.print("Update customer_name: ");
+                String customer_name2 = input.nextLine();
+                if (customer_name2.trim().length() < 1) {
+                    customer_name2 = customer.getCustomer_name();
+                }
+                System.out.print("Update customer_surname: ");
+                String customer_surname2 = input.nextLine();
+                if (customer_surname2.trim().length() < 1) {
+                    customer_surname2 = customer.getCustomer_surname();
+                }
+                System.out.print("Update customer address: ");
+                String address2 = input.nextLine();
+                if (address2.trim().length() < 1) {
+                    address2 = customer.getAddress();
+                }
+                System.out.print("Update customer email: ");
+                String email2 = input.nextLine();
+                if (email2.trim().length() < 1) {
+                    email2 = customer.getEmail();
+                }
+                customer.setCustomer_name(customer_name2);
+                customer.setCustomer_surname(customer_surname2);
+                customer.setAddress(address2);
+                customer.setEmail(email2);
+                customerTable.updateCustomer(customer);
+                customerOperations();
+            case 5:
+                System.out.print("Please enter the id of customer you would like to delete: ");
+                int customer_id4 = input.nextInt();
+                customerTable.deleteCustomer(customer_id4);
+                customerOperations();
+        }
+    }
+
+    public static void orderOperations() {
+
+    }
+
+    public static void book_detailOperations() {
+
+    }
+
+    public static void order_detailOperations() {
+
     }
 
     public static void endSession() {
