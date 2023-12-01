@@ -4,7 +4,9 @@ import dao.*;
 import entity.*;
 import metaData.MetaDataMethods;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Scanner;
 

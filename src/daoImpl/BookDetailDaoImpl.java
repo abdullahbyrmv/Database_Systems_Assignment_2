@@ -35,7 +35,7 @@ public class BookDetailDaoImpl extends AbstractDao implements BookDetailInterfac
         List<BookDetail> bookDetailList = new ArrayList<>();
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
-            st.execute("SELECT * FROM book_detail");
+            st.execute("SELECT * FROM book_detail ORDER BY book_id");
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int book_id = res.getInt("book_id");

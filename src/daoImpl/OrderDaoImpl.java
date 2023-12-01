@@ -33,7 +33,7 @@ public class OrderDaoImpl extends AbstractDao implements OrderInterface {
         List<Order> orders = new ArrayList<>();
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
-            st.execute("SELECT * FROM orders");
+            st.execute("SELECT * FROM orders ORDER BY order_id");
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int order_id = res.getInt("order_id");

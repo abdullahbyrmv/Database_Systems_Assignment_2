@@ -84,7 +84,7 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
         List<Book> books = new ArrayList<>();
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
-            st.execute("SELECT * FROM book");
+            st.execute("SELECT * FROM book ORDER BY book_id");
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int book_id = res.getInt("book_id");
@@ -166,7 +166,7 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
         List<Book> books = new ArrayList<>();
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
-            st.execute("SELECT * FROM (book NATURAL JOIN book_detail) JOIN author USING(author_id)");
+            st.execute("SELECT * FROM (book NATURAL JOIN book_detail) JOIN author USING(author_id) ORDER BY book_id");
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 Book book = joinAuthors(res);
@@ -207,7 +207,7 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
             st.execute("SELECT * FROM ((((book NATURAL JOIN book_detail) JOIN author USING(author_id))\n" +
-                    " JOIN order_detail USING(book_id)) JOIN orders USING(order_id)) JOIN customer USING(customer_id)");
+                    " JOIN order_detail USING(book_id)) JOIN orders USING(order_id)) JOIN customer USING(customer_id) ORDER BY book_id");
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 Book book = joinAllTables(res);

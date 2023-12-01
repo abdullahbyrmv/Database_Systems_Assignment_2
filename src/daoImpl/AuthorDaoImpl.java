@@ -36,7 +36,7 @@ public class AuthorDaoImpl extends AbstractDao implements AuthorInterface {
         List<Author> authors = new ArrayList<>();
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
-            st.execute("SELECT * FROM author");
+            st.execute("SELECT * FROM author ORDER BY author_id");
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int author_id = res.getInt("author_id");

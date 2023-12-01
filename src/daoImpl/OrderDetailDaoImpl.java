@@ -74,7 +74,7 @@ public class OrderDetailDaoImpl extends AbstractDao implements OrderDetailInterf
         List<OrderDetail> orderDetailList = new ArrayList<>();
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
-            st.execute("SELECT * FROM order_detail");
+            st.execute("SELECT * FROM order_detail ORDER BY order_id");
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int order_id = res.getInt("order_id");
