@@ -17,7 +17,8 @@ public class OrderDaoImpl extends AbstractDao implements OrderInterface {
             st.setInt(1, order.getOrder_id());
             st.setInt(2, order.getCustomer_id());
             st.setDate(3, order.getOrder_date());
-            System.out.println("Query executing: INSERT INTO orders (order_id,customer_id,order_date)" + " " + "VALUES (" + order.getOrder_id() + "," + order.getCustomer_id() + "," + order.getOrder_date() + ")");
+            System.out.println("Query executing: INSERT INTO orders (order_id,customer_id,order_date)" + " " +
+                    "VALUES (" + order.getOrder_id() + "," + order.getCustomer_id() + "," + order.getOrder_date() + ")");
             st.execute();
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());

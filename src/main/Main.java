@@ -1,10 +1,7 @@
 package main;
 
 import dao.*;
-import entity.Author;
-import entity.Book;
-import entity.Customer;
-import entity.Order;
+import entity.*;
 
 import java.sql.Date;
 import java.util.Scanner;
@@ -19,11 +16,12 @@ public class Main {
     static OrderDetailInterface orderDetailTable = Context.instanceOrderDetailDao();
 
     public static void main(String[] args) {
+        System.out.println("Welcome to JDBC Application");
         userInterface();
     }
 
     public static void userInterface() {
-        System.out.println("Welcome to JDBC Application");
+
         while (true) {
             System.out.println();
             System.out.println("In which table would you like to operate?");
@@ -65,7 +63,9 @@ public class Main {
                 3.Get book by book_id
                 4.Update book
                 5.Delete book
-                6.Get whole book information""");
+                6.Get whole book information
+                7.Join book with authors
+                8.Go to main menu""");
         int choice = input.nextInt();
         switch (choice) {
             case 1:
@@ -122,6 +122,10 @@ public class Main {
             case 6:
                 bookTable.getWholeBookInformation();
                 bookOperations();
+            case 7:
+                bookTable.getAuthorInformation();
+            case 8:
+                userInterface();
         }
     }
 
@@ -134,6 +138,7 @@ public class Main {
                 3.Get author by author_id
                 4.Update author
                 5.Delete author
+                6.Go to main menu
                 """);
         int choice = input.nextInt();
         switch (choice) {
@@ -183,6 +188,8 @@ public class Main {
                 int author_id4 = input.nextInt();
                 authorTable.deleteAuthor(author_id4);
                 authorOperations();
+            case 6:
+                userInterface();
         }
     }
 
@@ -195,6 +202,7 @@ public class Main {
                 3.Get customer by customer_id
                 4.Update customer
                 5.Delete customer
+                6.Go to main menu
                 """);
         int choice = input.nextInt();
         switch (choice) {
@@ -260,6 +268,8 @@ public class Main {
                 int customer_id4 = input.nextInt();
                 customerTable.deleteCustomer(customer_id4);
                 customerOperations();
+            case 6:
+                userInterface();
         }
     }
 
@@ -272,6 +282,7 @@ public class Main {
                 3.Get order by order_id
                 4.Update order
                 5.Delete order
+                6.Go to main menu
                 """);
         int choice = input.nextInt();
         switch (choice) {
@@ -320,15 +331,123 @@ public class Main {
                 int order_id4 = input.nextInt();
                 orderTable.deleteOrder(order_id4);
                 orderOperations();
+            case 6:
+                userInterface();
         }
     }
 
     public static void book_detailOperations() {
-
+        System.out.println();
+        System.out.println("What would you like to do?");
+        System.out.println("""
+                1.Insert book detail
+                2.Get all book details
+                3.Get book detail by book_id
+                4.Update book detail
+                5.Delete book detail
+                6.Go to main menu
+                """);
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1:
+                System.out.print("Enter book_id: ");
+                int book_id = input.nextInt();
+                System.out.print("Enter author_id: ");
+                int author_id = input.nextInt();
+                bookDetailTable.addBookDetail(new BookDetail(book_id, author_id));
+                book_detailOperations();
+            case 2:
+                bookDetailTable.getAllBookDetails();
+                book_detailOperations();
+            case 3:
+                System.out.print("Please enter the id of book: ");
+                int book_id2 = input.nextInt();
+                bookDetailTable.getBookDetailById(book_id2);
+                book_detailOperations();
+            case 4:
+                System.out.print("Please enter the id of book you would like to update: ");
+                int book_id3 = input.nextInt();
+                input.nextLine();
+                BookDetail bookDetail = bookDetailTable.getBookDetailById(book_id3);
+                if (bookDetail == null) {
+                    book_detailOperations();
+                }
+                System.out.println("Please enter new values to attributes you would like to update." +
+                        "Note: If you do not want to update any attribute just press enter and skip it.");
+                System.out.print("Update author_id: ");
+                int author_id2 = input.nextInt();
+                bookDetail.setAuthor_id(author_id2);
+                bookDetailTable.updateBookDetail(bookDetail);
+                book_detailOperations();
+            case 5:
+                System.out.print("Please enter the id of book you would like to delete: ");
+                int book_id4 = input.nextInt();
+                System.out.print("Please enter the id of author you would like to delete: ");
+                int author_id3 = input.nextInt();
+                bookDetailTable.deleteBookDetail(book_id4, author_id3);
+                book_detailOperations();
+            case 6:
+                userInterface();
+        }
     }
 
     public static void order_detailOperations() {
-
+        System.out.println();
+        System.out.println("What would you like to do?");
+        System.out.println("""
+                1.Insert order detail
+                2.Get all order details
+                3.Get order detail by order_id
+                4.Update order detail
+                5.Delete order detail
+                6.Go to main menu
+                """);
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1:
+                System.out.print("Enter order_id: ");
+                int order_id = input.nextInt();
+                System.out.print("Enter book_id: ");
+                int book_id = input.nextInt();
+                System.out.print("Enter the number of ordered books: ");
+                int number_of_ordered_books = input.nextInt();
+                orderDetailTable.addOrderDetail(new OrderDetail(order_id, book_id, number_of_ordered_books));
+                order_detailOperations();
+            case 2:
+                orderDetailTable.getAllOrderDetails();
+                order_detailOperations();
+            case 3:
+                System.out.print("Please enter the id of order: ");
+                int order_id2 = input.nextInt();
+                orderDetailTable.getOrderDetailById(order_id2);
+                order_detailOperations();
+            case 4:
+                System.out.print("Please enter the id of order you would like to update: ");
+                int order_id3 = input.nextInt();
+                OrderDetail orderDetail = orderDetailTable.getOrderDetailById(order_id3);
+                if (orderDetail == null) {
+                    order_detailOperations();
+                }
+                System.out.println("Please enter new values to attributes you would like to update." +
+                        "Note: If you do not want to update any attribute just press enter and skip it.");
+                System.out.print("Update book_id: ");
+                int book_id2 = input.nextInt();
+                System.out.print("Update number of ordered books: ");
+                int number_of_ordered_books2 = input.nextInt();
+                orderDetail.setBook_id(book_id2);
+                orderDetail.setNumber_of_ordered_books(number_of_ordered_books2);
+                orderDetailTable.updateOrderDetail(orderDetail);
+                order_detailOperations();
+            case 5:
+                System.out.print("Please enter the id of order you would like to delete: ");
+                int order_id4 = input.nextInt();
+                System.out.print("Please enter the id of book you would like to delete: ");
+                int book_id3 = input.nextInt();
+                orderDetailTable.deleteOrderDetail(order_id4, book_id3);
+                order_detailOperations();
+            case 6:
+                userInterface();
+        }
     }
 
     public static void endSession() {
