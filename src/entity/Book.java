@@ -7,6 +7,25 @@ public class Book {
     private int stock;
     private Author author;
     private Order order;
+    private Customer customer;
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public Book(int book_id, String title, String genre, int stock, Author author, Order order, Customer customer) {
+        this.book_id = book_id;
+        this.title = title;
+        this.genre = genre;
+        this.stock = stock;
+        this.author = author;
+        this.order = order;
+        this.customer = customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
     public Order getOrder() {
         return order;
@@ -101,6 +120,7 @@ public class Book {
                 ", stock=" + stock +
                 ", author=" + author +
                 ", order=" + order +
+                ", customer=" + customer +
                 '}';
     }
 }

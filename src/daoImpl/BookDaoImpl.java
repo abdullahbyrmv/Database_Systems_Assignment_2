@@ -30,32 +30,6 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
         return new Book(book_id, title, genre, stock, author);
     }
 
-    private Book joinAuthorsOrders(ResultSet res) throws SQLException {
-        int book_id = res.getInt("book_id");
-        String title = res.getString("title");
-        String genre = res.getString("genre");
-        int stock = res.getInt("stock");
-        int order_id = res.getInt("order_id");
-        Date order_date = res.getDate("order_date");
-        int customer_id = res.getInt("customer_id");
-        String customer_name = res.getString("customer_name");
-        String customer_surname = res.getString("customer_surname");
-        String customer_address = res.getString("address");
-        String customer_email = res.getString("email");
-        int number_of_ordered_books = res.getInt("number_of_ordered_books");
-
-        System.out.println("customer_id = " + customer_id + ", order_id = " + order_id + ", book_id = " + book_id
-                + ", title = " + title + ", genre = " + genre + ", stock = " + stock + ", number_of_ordered_books = " + number_of_ordered_books
-                + ", order_date = " + order_date + ", customer_name = " + customer_name + ", customer_surname = " + customer_surname
-                + ", address = " + customer_address + ", email = " + customer_email);
-
-        Customer customer = new Customer(customer_id, customer_name, customer_surname, customer_address, customer_email);
-
-        Order order = new Order(order_id, customer_id, order_date, customer);
-
-        return new Book(book_id, title, genre, stock, order);
-    }
-
     private Book joinAllTables(ResultSet res) throws SQLException {
         int book_id = res.getInt("book_id");
         String title = res.getString("title");
@@ -81,9 +55,9 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
 
         Author author = new Author(author_id, author_name, author_surname);
         Customer customer = new Customer(customer_id, customer_name, customer_surname, customer_address, customer_email);
-        Order order = new Order(order_id, customer_id, order_date, customer);
+        Order order = new Order(order_id, customer_id, order_date);
 
-        return new Book(book_id, title, genre, stock, author, order);
+        return new Book(book_id, title, genre, stock, author, order, customer);
     }
 
     @Override
@@ -122,6 +96,9 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
+        }
+        if (books.size() == 0) {
+            System.out.println("No records found");
         }
         return books;
     }
@@ -198,6 +175,9 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
+        if (books.size() == 0) {
+            System.out.println("No records found");
+        }
         return books;
     }
 
@@ -215,41 +195,8 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
-        return books;
-    }
-
-    @Override
-    public List<Book> getOrderInformation() {
-        List<Book> books = new ArrayList<>();
-        try (Connection connection = connect()) {
-            Statement st = connection.createStatement();
-            st.execute("SELECT * FROM ((book NATURAL JOIN order_detail) \n" +
-                    "JOIN orders USING(order_id)) JOIN customer USING(customer_id)");
-            ResultSet res = st.getResultSet();
-            while (res.next()) {
-                Book book = joinAuthorsOrders(res);
-                books.add(book);
-            }
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
-        return books;
-    }
-
-    @Override
-    public List<Book> getOrderInformationById(int book_id) {
-        List<Book> books = new ArrayList<>();
-        try (Connection connection = connect()) {
-            Statement st = connection.createStatement();
-            st.execute("SELECT * FROM ((book NATURAL JOIN order_detail) \n" +
-                    "JOIN orders USING(order_id)) JOIN customer USING(customer_id) WHERE book_id = " + book_id);
-            ResultSet res = st.getResultSet();
-            while (res.next()) {
-                Book book = joinAuthorsOrders(res);
-                books.add(book);
-            }
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+        if (books.size() == 0) {
+            System.out.println("No records found");
         }
         return books;
     }
@@ -269,6 +216,9 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
+        if (books.size() == 0) {
+            System.out.println("No records found");
+        }
         return books;
     }
 
@@ -286,6 +236,9 @@ public class BookDaoImpl extends AbstractDao implements BookInterface {
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
+        }
+        if (books.size() == 0) {
+            System.out.println("No records found");
         }
         return books;
     }
