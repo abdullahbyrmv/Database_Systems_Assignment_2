@@ -118,7 +118,10 @@ public class Main {
                 bookOperations();
             case 4:
                 System.out.println();
-                bookTable.getAllBooks();
+                List<Book> books = bookTable.getAllBooks();
+                if (books.size() == 0) {
+                    bookOperations();
+                }
                 System.out.println();
                 System.out.print("Please enter the id of book you would like to update: ");
                 int book_id3 = input.nextInt();
@@ -225,7 +228,10 @@ public class Main {
                 authorOperations();
             case 4:
                 System.out.println();
-                authorTable.getAllAuthors();
+                List<Author> authors = authorTable.getAllAuthors();
+                if (authors.size() == 0) {
+                    authorOperations();
+                }
                 System.out.println();
                 System.out.print("Please enter the id of author you would like to update: ");
                 int author_id3 = input.nextInt();
@@ -483,7 +489,10 @@ public class Main {
                 book_detailOperations();
             case 4:
                 System.out.println();
-                bookDetailTable.getAllBookDetails();
+                List<BookDetail> bookDetailList = bookDetailTable.getAllBookDetails();
+                if (bookDetailList.size() == 0) {
+                    book_detailOperations();
+                }
                 System.out.println();
                 System.out.print("Please enter the id of book you would like to update: ");
                 int book_id3 = input.nextInt();
