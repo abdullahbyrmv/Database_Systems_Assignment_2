@@ -39,7 +39,7 @@ public class CustomerDaoImpl extends AbstractDao implements CustomerInterface {
         List<Customer> customers = new ArrayList<>();
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
-            st.execute("SELECT * FROM customer ORDERY BY customer_id");
+            st.execute("SELECT * FROM customer ORDER BY customer_id");
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int customer_id = res.getInt("customer_id");
@@ -53,6 +53,9 @@ public class CustomerDaoImpl extends AbstractDao implements CustomerInterface {
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
+        }
+        if (customers.size() == 0) {
+            System.out.println("No records found");
         }
         return customers;
     }

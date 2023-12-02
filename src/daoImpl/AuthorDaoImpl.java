@@ -48,6 +48,9 @@ public class AuthorDaoImpl extends AbstractDao implements AuthorInterface {
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
+        if (authors.size() == 0) {
+            System.out.println("No records found");
+        }
         return authors;
     }
 

@@ -46,6 +46,9 @@ public class BookDetailDaoImpl extends AbstractDao implements BookDetailInterfac
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
+        if (bookDetailList.size() == 0) {
+            System.out.println("No records found");
+        }
         return bookDetailList;
     }
 
@@ -83,11 +86,11 @@ public class BookDetailDaoImpl extends AbstractDao implements BookDetailInterfac
     }
 
     @Override
-    public BookDetail getBookDetailById(int book_id) {
+    public BookDetail getBookDetailByIdAndAuthorId(int book_id, int author_id) {
         BookDetail bookDetail = null;
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
-            st.execute("SELECT * FROM book_detail WHERE book_id = " + book_id);
+            st.execute("SELECT * FROM book_detail WHERE book_id = " + book_id + " AND author_id = " + author_id);
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int id_book = res.getInt("book_id");
@@ -99,8 +102,30 @@ public class BookDetailDaoImpl extends AbstractDao implements BookDetailInterfac
             System.out.println("An error occurred: " + e.getMessage());
         }
         if (bookDetail == null) {
-            System.out.println("No such book found");
+            System.out.println("No such book detail found");
         }
         return bookDetail;
+    }
+
+    @Override
+    public List<BookDetail> getBookDetailByBookId(int book_id) {
+        List<BookDetail> bookDetailList = new ArrayList<>();
+        try (Connection connection = connect()) {
+            Statement st = connection.createStatement();
+            st.execute("SELECT * FROM book_detail WHERE book_id = " + book_id);
+            ResultSet res = st.getResultSet();
+            while (res.next()) {
+                int id_book = res.getInt("book_id");
+                int id_author = res.getInt("author_id");
+                System.out.println("book_id = " + id_book + ", author_id = " + id_author);
+                bookDetailList.add(new BookDetail(id_book, id_author));
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        if (bookDetailList.size() == 0) {
+            System.out.println("No such book detail found");
+        }
+        return bookDetailList;
     }
 }

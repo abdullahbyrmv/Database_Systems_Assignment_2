@@ -13,5 +13,7 @@ public interface OrderDetailInterface {
 
     public boolean deleteOrderDetail(int order_id, int book_id);
 
-    public OrderDetail getOrderDetailById(int order_id);
+    public List<OrderDetail> getOrderDetailByOrderId(int order_id);
+
+    public OrderDetail getOrderDetailByOrderIdAndBookId(int order_id,int book_id);
 }

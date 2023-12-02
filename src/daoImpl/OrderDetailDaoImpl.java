@@ -87,29 +87,21 @@ public class OrderDetailDaoImpl extends AbstractDao implements OrderDetailInterf
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
+        if (orderDetailList.size() == 0) {
+            System.out.println("No records found");
+        }
         return orderDetailList;
     }
 
     @Override
     public boolean updateOrderDetail(OrderDetail orderDetail) {
-        BookInterface bookInterface = Context.instanceBookDao();
-
+        BookInterface bookTable = Context.instanceBookDao();
+        OrderDetailInterface orderDetailTable = Context.instanceOrderDetailDao();
         try (Connection connection = connect()) {
             PreparedStatement st = connection.prepareStatement("UPDATE order_detail SET book_id=?,number_of_ordered_books=? WHERE order_id=?");
-            PreparedStatement updateBookStatement = connection.prepareStatement("UPDATE book SET stock = ? WHERE book_id = ?");
             st.setInt(1, orderDetail.getBook_id());
             st.setInt(2, orderDetail.getNumber_of_ordered_books());
             st.setInt(3, orderDetail.getOrder_id());
-
-            Book book = bookInterface.getBookById(orderDetail.getBook_id());
-
-            if (book != null && book.getStock() >= orderDetail.getNumber_of_ordered_books()) {
-                int updatedStock = book.getStock() - orderDetail.getNumber_of_ordered_books();
-                updateBookStatement.setInt(1, updatedStock);
-                updateBookStatement.setInt(2, orderDetail.getBook_id());
-                updateBookStatement.executeUpdate();
-            }
-
             System.out.println("Updated order with order_id = " + orderDetail.getOrder_id());
             return st.execute();
         } catch (Exception e) {
@@ -121,13 +113,25 @@ public class OrderDetailDaoImpl extends AbstractDao implements OrderDetailInterf
     @Override
     public boolean deleteOrderDetail(int order_id, int book_id) {
         try (Connection connection = connect()) {
+            BookInterface bookTable = Context.instanceBookDao();
+            OrderDetailInterface orderDetailTable = Context.instanceOrderDetailDao();
             Statement st = connection.createStatement();
+            PreparedStatement updateBookStatement = connection.prepareStatement("UPDATE book SET stock = ? WHERE book_id = ?");
+            connection.setAutoCommit(false);
+            Book book = bookTable.getBookById(book_id);
+            OrderDetail orderDetail = orderDetailTable.getOrderDetailByOrderIdAndBookId(order_id, book_id);
+            updateBookStatement.setInt(1, book.getStock() + orderDetail.getNumber_of_ordered_books());
+            updateBookStatement.setInt(2, book_id);
             int number_of_affected_rows = st.executeUpdate("DELETE FROM order_detail WHERE order_id = " + order_id +
                     " AND book_id = " + book_id);
             if (number_of_affected_rows == 0) {
                 System.out.println("No record with order_id = " + order_id + " AND book_id = " + book_id + " exists");
                 return false;
             }
+
+            updateBookStatement.executeUpdate();
+
+            connection.commit();
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
             return false;
@@ -137,11 +141,35 @@ public class OrderDetailDaoImpl extends AbstractDao implements OrderDetailInterf
     }
 
     @Override
-    public OrderDetail getOrderDetailById(int order_id) {
-        OrderDetail orderDetail = null;
+    public List<OrderDetail> getOrderDetailByOrderId(int order_id) {
+        List<OrderDetail> orderDetailList = new ArrayList<>();
         try (Connection connection = connect()) {
             Statement st = connection.createStatement();
             st.execute("SELECT * FROM order_detail WHERE order_id = " + order_id);
+            ResultSet res = st.getResultSet();
+            while (res.next()) {
+                int id_order = res.getInt("order_id");
+                int id_book = res.getInt("book_id");
+                int number_of_ordered_books = res.getInt("number_of_ordered_books");
+                System.out.println("order_id = " + id_order + ", book_id = " + id_book + ", number_of_ordered_books = "
+                        + number_of_ordered_books);
+                orderDetailList.add(new OrderDetail(id_order, id_book, number_of_ordered_books));
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        if (orderDetailList.size() == 0) {
+            System.out.println("No such order detail found");
+        }
+        return orderDetailList;
+    }
+
+    @Override
+    public OrderDetail getOrderDetailByOrderIdAndBookId(int order_id, int book_id) {
+        OrderDetail orderDetail = null;
+        try (Connection connection = connect()) {
+            Statement st = connection.createStatement();
+            st.execute("SELECT * FROM order_detail WHERE order_id = " + order_id + " AND book_id = " + book_id);
             ResultSet res = st.getResultSet();
             while (res.next()) {
                 int id_order = res.getInt("order_id");
@@ -155,7 +183,7 @@ public class OrderDetailDaoImpl extends AbstractDao implements OrderDetailInterf
             System.out.println("An error occurred: " + e.getMessage());
         }
         if (orderDetail == null) {
-            System.out.println("No such order found");
+            System.out.println("No such order detail found");
         }
         return orderDetail;
     }

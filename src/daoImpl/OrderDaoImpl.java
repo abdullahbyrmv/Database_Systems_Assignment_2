@@ -45,6 +45,9 @@ public class OrderDaoImpl extends AbstractDao implements OrderInterface {
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
+        if (orders.size() == 0) {
+            System.out.println("No records found");
+        }
         return orders;
     }
 

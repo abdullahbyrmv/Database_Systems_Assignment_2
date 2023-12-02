@@ -13,5 +13,7 @@ public interface BookDetailInterface {
 
     public boolean deleteBookDetail(int book_id, int author_id);
 
-    public BookDetail getBookDetailById(int book_id);
+    public BookDetail getBookDetailByIdAndAuthorId(int book_id,int author_id);
+
+    public List<BookDetail> getBookDetailByBookId(int book_id);
 }
