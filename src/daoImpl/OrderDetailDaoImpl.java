@@ -15,17 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDetailDaoImpl extends AbstractDao implements OrderDetailInterface {
-
-    private void deleteEmptyOrder() {
-        try (Connection connection = connect()) {
-            Statement statement = connection.createStatement();
-            String query = "DELETE FROM orders WHERE order_id NOT IN (SELECT DISTINCT order_id FROM order_detail)";
-            statement.executeUpdate(query);
-        } catch (Exception e) {
-            System.out.println("An error occurred while deleting empty orders: " + e.getMessage());
-        }
-    }
-
     @Override
     public boolean addOrderDetail(OrderDetail orderDetail) {
 
@@ -186,5 +175,19 @@ public class OrderDetailDaoImpl extends AbstractDao implements OrderDetailInterf
             System.out.println("No such order detail found");
         }
         return orderDetail;
+    }
+
+    @Override
+    public boolean deleteEmptyOrders() {
+        try (Connection connection = connect()) {
+            Statement statement = connection.createStatement();
+            String query = "DELETE FROM orders WHERE order_id NOT IN (SELECT DISTINCT order_id FROM order_detail)";
+            statement.executeUpdate(query);
+            System.out.println("Non-Successful Orders Deleted");
+        } catch (Exception e) {
+            System.out.println("An error occurred while deleting empty orders: " + e.getMessage());
+            return false;
+        }
+        return true;
     }
 }

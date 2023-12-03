@@ -16,4 +16,6 @@ public interface OrderDetailInterface {
     public List<OrderDetail> getOrderDetailByOrderId(int order_id);
 
     public OrderDetail getOrderDetailByOrderIdAndBookId(int order_id,int book_id);
+
+    public boolean deleteEmptyOrders();
 }
