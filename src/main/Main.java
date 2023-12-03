@@ -69,6 +69,9 @@ public class Main {
                     userInterface();
                 case 11:
                     endSession();
+                default:
+                    System.out.println("No such option exists");
+                    userInterface();
             }
         }
     }
@@ -185,6 +188,9 @@ public class Main {
                 bookOperations();
             case 10:
                 userInterface();
+            default:
+                System.out.println("No such option exist");
+                bookOperations();
         }
     }
 
@@ -268,6 +274,9 @@ public class Main {
                 authorOperations();
             case 6:
                 userInterface();
+            default:
+                System.out.println("No such option exists");
+                authorOperations();
         }
     }
 
@@ -367,6 +376,9 @@ public class Main {
                 customerOperations();
             case 6:
                 userInterface();
+            default:
+                System.out.println("Noc such option exists");
+                customerOperations();
         }
     }
 
@@ -449,6 +461,9 @@ public class Main {
                 orderOperations();
             case 6:
                 userInterface();
+            default:
+                System.out.println("Noc such option exists");
+                orderOperations();
         }
     }
 
@@ -522,6 +537,9 @@ public class Main {
                 book_detailOperations();
             case 6:
                 userInterface();
+            default:
+                System.out.println("Noc such option exists");
+                book_detailOperations();
         }
     }
 
@@ -604,6 +622,9 @@ public class Main {
                 order_detailOperations();
             case 7:
                 userInterface();
+            default:
+                System.out.println("Noc such option exists");
+                order_detailOperations();
         }
     }
 
