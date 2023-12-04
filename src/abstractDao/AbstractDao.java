@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public abstract class AbstractDao {
     public static Connection connect() {
-        String url = "jdbc:postgresql://hostname:port_number/Database_Name";
-        String user = "username";
-        String password = "password";
+        String url = "jdbc:postgresql://hostname:portnumber/Database_name";
+        String user = "x";
+        String password = "x";
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url, user, password);

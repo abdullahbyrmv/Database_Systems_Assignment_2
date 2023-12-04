@@ -552,8 +552,7 @@ public class Main {
                 3.Get order detail by order_id
                 4.Update order detail
                 5.Delete order detail
-                6.Delete empty orders (Use this at the very end of your work in this table)
-                7.Go to main menu
+                6.Go to main menu
                 """);
         int choice = input.nextInt();
         System.out.println();
@@ -618,9 +617,6 @@ public class Main {
                 System.out.println();
                 order_detailOperations();
             case 6:
-                orderDetailTable.deleteEmptyOrders();
-                order_detailOperations();
-            case 7:
                 userInterface();
             default:
                 System.out.println("Noc such option exists");

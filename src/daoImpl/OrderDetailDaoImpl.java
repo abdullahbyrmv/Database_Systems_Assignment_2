@@ -176,18 +176,4 @@ public class OrderDetailDaoImpl extends AbstractDao implements OrderDetailInterf
         }
         return orderDetail;
     }
-
-    @Override
-    public boolean deleteEmptyOrders() {
-        try (Connection connection = connect()) {
-            Statement statement = connection.createStatement();
-            String query = "DELETE FROM orders WHERE order_id NOT IN (SELECT DISTINCT order_id FROM order_detail)";
-            statement.executeUpdate(query);
-            System.out.println("Non-Successful Orders Deleted");
-        } catch (Exception e) {
-            System.out.println("An error occurred while deleting empty orders: " + e.getMessage());
-            return false;
-        }
-        return true;
-    }
 }
