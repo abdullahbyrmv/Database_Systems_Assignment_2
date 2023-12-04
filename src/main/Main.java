@@ -19,7 +19,6 @@ public class Main {
     static OrderDetailInterface orderDetailTable = Context.instanceOrderDetailDao();
 
     public static void main(String[] args) throws SQLException {
-        System.out.println("Welcome to JDBC Application");
         userInterface();
     }
 
@@ -135,7 +134,10 @@ public class Main {
                     System.out.println();
                     bookOperations();
                 }
-                System.out.println("Please enter new values to attributes you would like to update." + "Note: If you do not want to update any attribute just press enter and skip it.");
+                System.out.println("Please enter new values to attributes you would like to update.\n" +
+                        "Note: If you do not want to update any attribute just press enter and skip it but this option is only applicable to string fields.\n" +
+                        "You should type the old value of integer fields if you do not want to update them");
+                System.out.println();
                 System.out.print("Update title: ");
                 String title2 = input.nextLine();
                 if (title2.trim().length() < 1) {
@@ -248,7 +250,10 @@ public class Main {
                     System.out.println();
                     authorOperations();
                 }
-                System.out.println("Please enter new values to attributes you would like to update." + "Note: If you do not want to update any attribute just press enter and skip it.");
+                System.out.println("Please enter new values to attributes you would like to update.\n" +
+                        "Note: If you do not want to update any attribute just press enter and skip it but this option is only applicable to string fields.\n" +
+                        "You should type the old value of integer fields if you do not want to update them");
+                System.out.println();
                 System.out.print("Update author_name: ");
                 String author_name2 = input.nextLine();
                 if (author_name2.trim().length() < 1) {
@@ -338,7 +343,10 @@ public class Main {
                     System.out.println();
                     customerOperations();
                 }
-                System.out.println("Please enter new values to attributes you would like to update." + "Note: If you do not want to update any attribute just press enter and skip it.");
+                System.out.println("Please enter new values to attributes you would like to update.\n" +
+                        "Note: If you do not want to update any attribute just press enter and skip it but this option is only applicable to string fields.\n" +
+                        "You should type the old value of integer fields if you do not want to update them");
+                System.out.println();
                 System.out.print("Update customer_name: ");
                 String customer_name2 = input.nextLine();
                 if (customer_name2.trim().length() < 1) {
@@ -437,7 +445,10 @@ public class Main {
                     System.out.println();
                     orderOperations();
                 }
-                System.out.println("Please enter new values to attributes you would like to update." + "Note: If you do not want to update any attribute just press enter and skip it.");
+                System.out.println("Please enter new values to attributes you would like to update.\n" +
+                        "Note: If you do not want to update any attribute just press enter and skip it but this option is only applicable to string fields.\n" +
+                        "You should type the old value of integer fields if you do not want to update them");
+                System.out.println();
                 System.out.print("Update customer_id: ");
                 int customer_id2 = input.nextInt();
                 input.nextLine();
@@ -518,7 +529,10 @@ public class Main {
                     System.out.println();
                     book_detailOperations();
                 }
-                System.out.println("Please enter new values to attributes you would like to update." + "Note: If you do not want to update any attribute just press enter and skip it.");
+                System.out.println("Please enter new values to attributes you would like to update.\n" +
+                        "Note: If you do not want to update any attribute just press enter and skip it but this option is only applicable to string fields.\n" +
+                        "You should type the old value of integer fields if you do not want to update them");
+                System.out.println();
                 System.out.print("Update author_id: ");
                 int author_id2 = input.nextInt();
                 bookDetail.setAuthor_id(author_id2);
@@ -596,7 +610,9 @@ public class Main {
                     order_detailOperations();
                     System.out.println();
                 }
-                System.out.println("Please enter new values to attributes you would like to update." + "Note: If you do not want to update any attribute just press enter and skip it.");
+                System.out.println("Please enter new values to attributes you would like to update.\n" +
+                        "Note: If you do not want to update any attribute just press enter and skip it but this option is only applicable to string fields.\n" +
+                        "You should type the old value of integer fields if you do not want to update them");
                 System.out.print("Update book_id: ");
                 int book_id3 = input.nextInt();
                 System.out.print("Update number of ordered books: ");
